@@ -2,227 +2,233 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(
-    page_title="Valentine",
+    page_title="Valentine 💖",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
-components.html(
+# 🔒 HARD RESET STREAMLIT LAYOUT (THIS IS THE KEY)
+st.markdown(
     """
+    <style>
+    /* Remove Streamlit default spacing */
+    .block-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100vw !important;
+    }
+
+    header, footer {
+        display: none !important;
+    }
+
+    html, body, [data-testid="stApp"] {
+        height: 100vh !important;
+        width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: fixed !important;
+    }
+
+    iframe {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        border: none !important;
+        overflow: hidden !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+html = """
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* ------------------ HARD STOP SCROLL ------------------ */
-html, body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    overflow: hidden !important;
-}
-
-/* ------------------ BACKGROUND ------------------ */
-body {
+* {
+    box-sizing: border-box;
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(
-        120deg,
-        #7c3aed,
-        #ec4899,
-        #3b82f6,
-        #f97316
-    );
-    background-size: 400% 400%;
-    animation: gradientMove 12s ease infinite;
+    -webkit-tap-highlight-color: transparent;
 }
 
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
 }
 
-/* ------------------ CENTER CONTENT ------------------ */
-.container {
-    height: 100vh;
+body {
+    background: linear-gradient(135deg, #fbd3e9, #fcefee);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Card */
 .card {
-    background: rgba(255,255,255,0.95);
-    padding: clamp(32px, 6vw, 56px);
-    border-radius: 24px;
+    background: white;
+    width: min(92vw, 420px);
+    padding: 2rem;
+    border-radius: 22px;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.18);
     text-align: center;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
-    width: min(90vw, 420px);
     position: relative;
 }
 
+/* Icon */
+.icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Question */
 .question {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 6vw, 40px);
-    margin-bottom: 32px;
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
     color: #111827;
 }
 
-/* ------------------ BUTTONS ------------------ */
+/* Buttons */
 .buttons {
     display: flex;
-    gap: 20px;
     justify-content: center;
+    gap: 1.6rem;
 }
 
 button {
-    padding: 14px 32px;
-    font-size: 14px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    border-radius: 999px;
     border: none;
+    padding: 0.75rem 2.2rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
     cursor: pointer;
-    font-weight: 600;
 }
 
-/* YES BUTTON */
+/* YES */
 .yes {
-    background: linear-gradient(135deg, #7c3aed, #ec4899);
+    background: #ec4899;
     color: white;
-    box-shadow: 0 10px 25px rgba(236,72,153,0.4);
+    box-shadow: 0 12px 30px rgba(236,72,153,0.45);
 }
 
-.yes:hover {
-    transform: translateY(-2px);
-}
-
-/* NO BUTTON (VISIBLE BUT SHY) */
+/* NO */
 .no {
     background: #f3f4f6;
     color: #111827;
     border: 1px solid #d1d5db;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
     position: relative;
-    touch-action: manipulation;
 }
 
-/* ------------------ MODAL ------------------ */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(8px);
+/* Helper */
+.helper {
+    font-size: 0.75rem;
+    margin-top: 1.3rem;
+    color: #6b7280;
+}
+
+/* Celebrate */
+.celebrate {
     display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
 }
 
-.modal {
-    background: white;
-    border-radius: 22px;
-    width: min(90vw, 420px);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.3);
-    overflow: hidden;
+.confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 }
 
-.modal-bar {
-    height: 6px;
-    background: linear-gradient(90deg, #7c3aed, #ec4899, #3b82f6);
+.confetti span {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ec4899;
+    animation: fall 2s linear infinite;
 }
 
-.modal-content {
-    padding: 36px;
-    text-align: center;
-}
-
-.modal h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.modal p {
-    color: #4b5563;
-    margin-bottom: 26px;
-}
-
-.close {
-    background: #111827;
-    color: white;
-    padding: 12px 28px;
-    border-radius: 999px;
-    cursor: pointer;
+@keyframes fall {
+    to { transform: translateY(100vh); }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="main">
-    <div class="card">
+<div class="card">
+    <div id="ask">
+        <div class="icon">🐱💖</div>
         <div class="question">will you be my valentine?</div>
+
         <div class="buttons">
-            <button class="yes" onclick="openModal()">Yes</button>
+            <button class="yes" onclick="sayYes()">Yes</button>
             <button class="no" id="noBtn">No</button>
         </div>
-    </div>
-</div>
 
-<!-- MODAL -->
-<div class="overlay" id="overlay">
-    <div class="modal">
-        <div class="modal-bar"></div>
-        <div class="modal-content">
-            <h2>Wonderful!</h2>
-            <p>I’m really happy you said yes 💖</p>
-            <button class="close" onclick="closeModal()">Close</button>
-        </div>
+        <div class="helper">the "No" button is feeling shy 🙈</div>
     </div>
+
+    <div class="celebrate" id="yay">
+        <div class="icon">🎉</div>
+        <h2>YAY!</h2>
+        <img
+            src="https://media.giphy.com/media/26xBs99iqmmSLYGqY/giphy.gif"
+            style="width:100%; border-radius:14px;"
+        />
+    </div>
+
+    <div class="confetti" id="confetti"></div>
 </div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
 
 function moveAway() {
-    const bw = noBtn.offsetWidth;
-    const bh = noBtn.offsetHeight;
-
-    const maxX = window.innerWidth - bw - 12;
-    const maxY = window.innerHeight - bh - 12;
-
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
+    const x = Math.random() * (window.innerWidth - 140);
+    const y = Math.random() * (window.innerHeight - 100);
     noBtn.style.position = "fixed";
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
-/* Pointer events = iOS safe */
-noBtn.addEventListener("pointerenter", moveAway);
-noBtn.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    moveAway();
-});
-noBtn.addEventListener("click", e => e.preventDefault());
+noBtn.addEventListener("mouseenter", moveAway);
+noBtn.addEventListener("mousemove", moveAway);
+noBtn.addEventListener("touchstart", moveAway);
 
-function openModal() {
-    document.getElementById("overlay").style.display = "flex";
+["click","mousedown","mouseup","touchend"].forEach(evt =>
+    noBtn.addEventListener(evt, e => e.preventDefault())
+);
+
+function sayYes() {
+    document.getElementById("ask").style.display = "none";
+    document.getElementById("yay").style.display = "block";
+    launchConfetti();
 }
 
-function closeModal() {
-    document.getElementById("overlay").style.display = "none";
+function launchConfetti() {
+    const confetti = document.getElementById("confetti");
+    for (let i = 0; i < 40; i++) {
+        const piece = document.createElement("span");
+        piece.style.left = Math.random() * 100 + "%";
+        piece.style.animationDuration = (1 + Math.random() * 2) + "s";
+        confetti.appendChild(piece);
+    }
 }
 </script>
 
 </body>
 </html>
-""",
-    height=1000,
-)
+"""
+
+# ⚠️ height=1 is intentional
+components.html(html, height=1, scrolling=False)
