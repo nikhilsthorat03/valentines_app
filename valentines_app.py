@@ -22,13 +22,32 @@ st.markdown(
         display: none !important;
     }
 
-    html, body, [data-testid="stApp"] {
+    html {
         height: 100vh !important;
         width: 100vw !important;
         margin: 0 !important;
         padding: 0 !important;
         overflow: hidden !important;
         position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        overscroll-behavior: none !important;
+        -webkit-overflow-scrolling: none !important;
+        touch-action: none !important;
+    }
+
+    body, [data-testid="stApp"] {
+        height: 100vh !important;
+        width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        overscroll-behavior: none !important;
+        -webkit-overflow-scrolling: none !important;
+        touch-action: none !important;
     }
 
     iframe {
@@ -37,6 +56,49 @@ st.markdown(
         width: 100vw !important;
         height: 100vh !important;
         border: none !important;
+        overflow: hidden !important;
+        overscroll-behavior: none !important;
+        scrolling: no !important;
+    }
+    
+    /* Lock iframe content */
+    iframe[data-testid="stIframe"] {
+        overflow: hidden !important;
+        scrolling: no !important;
+    }
+
+    /* Prevent all scrolling on EVERY element */
+    *, *::before, *::after {
+        overscroll-behavior: none !important;
+        -webkit-overflow-scrolling: none !important;
+        touch-action: none !important;
+    }
+
+    /* Lock all containers */
+    .main, .block-container, [data-testid="stAppViewContainer"] {
+        overflow: hidden !important;
+        position: fixed !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    /* Hide scrollbars everywhere */
+    ::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        background: transparent !important;
+    }
+
+    * {
+        -ms-overflow-style: none !important;
+        scrollbar-width: none !important;
+    }
+
+    /* Prevent any element from being scrollable */
+    div, section, article, main, aside, header, footer {
         overflow: hidden !important;
     }
     </style>
@@ -50,7 +112,7 @@ html = """
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -61,18 +123,50 @@ html = """
     -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    overflow: hidden;
+html {
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: none !important;
+    touch-action: none !important;
+    -ms-touch-action: none !important;
 }
 
 body {
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
     background: linear-gradient(135deg, #fbd3e9, #fcefee);
     display: flex;
     align-items: center;
     justify-content: center;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: none !important;
+    touch-action: none !important;
+    -ms-touch-action: none !important;
+}
+
+/* Hide scrollbars */
+::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+* {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: none;
 }
 
 /* Card */
@@ -191,6 +285,156 @@ button {
 </div>
 
 <script>
+(function() {
+    'use strict';
+    
+    // Store original scroll positions
+    let scrollX = 0;
+    let scrollY = 0;
+    
+    // ULTRA AGGRESSIVE SCROLL LOCK - Multiple methods
+    function ultraLockScroll() {
+        // Method 1: Force scroll to 0
+        if (window.scrollX !== 0 || window.scrollY !== 0) {
+            window.scrollTo(0, 0);
+            window.scroll(0, 0);
+        }
+        
+        // Method 2: Lock document elements
+        if (document.documentElement.scrollTop !== 0 || document.documentElement.scrollLeft !== 0) {
+            document.documentElement.scrollTop = 0;
+            document.documentElement.scrollLeft = 0;
+        }
+        
+        // Method 3: Lock body
+        if (document.body.scrollTop !== 0 || document.body.scrollLeft !== 0) {
+            document.body.scrollTop = 0;
+            document.body.scrollLeft = 0;
+        }
+        
+        // Method 4: Force styles
+        document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+        document.documentElement.style.setProperty('position', 'fixed', 'important');
+        document.documentElement.style.setProperty('top', '0', 'important');
+        document.documentElement.style.setProperty('left', '0', 'important');
+        document.documentElement.style.setProperty('width', '100%', 'important');
+        document.documentElement.style.setProperty('height', '100%', 'important');
+        
+        document.body.style.setProperty('overflow', 'hidden', 'important');
+        document.body.style.setProperty('position', 'fixed', 'important');
+        document.body.style.setProperty('top', '0', 'important');
+        document.body.style.setProperty('left', '0', 'important');
+        document.body.style.setProperty('width', '100%', 'important');
+        document.body.style.setProperty('height', '100%', 'important');
+        
+        // Method 5: Lock all scrollable elements
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(el => {
+            if (el.scrollTop !== 0 || el.scrollLeft !== 0) {
+                el.scrollTop = 0;
+                el.scrollLeft = 0;
+            }
+            el.style.setProperty('overflow', 'hidden', 'important');
+        });
+        
+        // Continue locking
+        requestAnimationFrame(ultraLockScroll);
+    }
+    
+    // Start immediately
+    ultraLockScroll();
+    
+    // Also use setInterval as backup
+    setInterval(function() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.documentElement.scrollLeft = 0;
+        document.body.scrollTop = 0;
+        document.body.scrollLeft = 0;
+    }, 10);
+    
+    // Prevent ALL scroll events - Ultra aggressive
+    const killScroll = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        window.scrollTo(0, 0);
+        return false;
+    };
+    
+    // Block every possible scroll event
+    const scrollEvents = [
+        'scroll', 'wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll',
+        'touchstart', 'touchmove', 'touchend', 'touchcancel',
+        'gesturestart', 'gesturechange', 'gestureend',
+        'keydown', 'keyup'
+    ];
+    
+    scrollEvents.forEach(event => {
+        // Add to document
+        document.addEventListener(event, killScroll, { passive: false, capture: true });
+        // Add to documentElement
+        document.documentElement.addEventListener(event, killScroll, { passive: false, capture: true });
+        // Add to body
+        document.body.addEventListener(event, killScroll, { passive: false, capture: true });
+        // Add to window
+        window.addEventListener(event, killScroll, { passive: false, capture: true });
+    });
+    
+    // Prevent keyboard scrolling
+    document.addEventListener('keydown', function(e) {
+        if ([32, 33, 34, 35, 36, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+            return false;
+        }
+    }, { passive: false, capture: true });
+    
+    // Prevent touch scrolling completely
+    let lastTouchY = 0;
+    document.addEventListener('touchstart', function(e) {
+        lastTouchY = e.touches[0].clientY;
+        e.preventDefault();
+    }, { passive: false, capture: true });
+    
+    document.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }, { passive: false, capture: true });
+    
+    // Lock on any event
+    ['resize', 'orientationchange', 'load', 'DOMContentLoaded'].forEach(event => {
+        window.addEventListener(event, function() {
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }, 0);
+        });
+    });
+    
+    // MutationObserver to watch for style changes
+    const observer = new MutationObserver(function() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    });
+    
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['style', 'class'],
+        childList: true,
+        subtree: true
+    });
+    
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['style', 'class'],
+        childList: true,
+        subtree: true
+    });
+})();
+
 const noBtn = document.getElementById("noBtn");
 
 function moveAway() {
@@ -230,5 +474,5 @@ function launchConfetti() {
 </html>
 """
 
-# ⚠️ height=1 is intentional
+# ⚠️ height=1 is intentional - prevents iframe scrolling
 components.html(html, height=1, scrolling=False)
