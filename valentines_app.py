@@ -2,548 +2,227 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(
-    page_title="Valentine 💖",
+    page_title="Valentine",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="collapsed"
 )
 
-# 🔒 HARD RESET STREAMLIT LAYOUT (THIS IS THE KEY)
-st.markdown(
+components.html(
     """
-    <style>
-    /* Remove Streamlit default spacing */
-    .block-container {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100vw !important;
-    }
-
-    header, footer {
-        display: none !important;
-    }
-
-    html {
-        height: 100vh !important;
-        width: 100vw !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        overscroll-behavior: none !important;
-        -webkit-overflow-scrolling: none !important;
-        touch-action: none !important;
-    }
-
-    body, [data-testid="stApp"] {
-        height: 100vh !important;
-        width: 100vw !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        overscroll-behavior: none !important;
-        -webkit-overflow-scrolling: none !important;
-        touch-action: none !important;
-    }
-
-    iframe {
-        position: fixed !important;
-        inset: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        border: none !important;
-        overflow: hidden !important;
-        overscroll-behavior: none !important;
-        scrolling: no !important;
-    }
-    
-    /* Lock iframe content */
-    iframe[data-testid="stIframe"] {
-        overflow: hidden !important;
-        scrolling: no !important;
-    }
-
-    /* Prevent all scrolling on EVERY element */
-    *, *::before, *::after {
-        overscroll-behavior: none !important;
-        -webkit-overflow-scrolling: none !important;
-        touch-action: none !important;
-    }
-
-    /* Lock all containers */
-    .main, .block-container, [data-testid="stAppViewContainer"] {
-        overflow: hidden !important;
-        position: fixed !important;
-        height: 100vh !important;
-        width: 100vw !important;
-        top: 0 !important;
-        left: 0 !important;
-    }
-
-    /* Hide scrollbars everywhere */
-    ::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-        background: transparent !important;
-    }
-
-    * {
-        -ms-overflow-style: none !important;
-        scrollbar-width: none !important;
-    }
-
-    /* Prevent any element from being scrollable */
-    div, section, article, main, aside, header, footer {
-        overflow: hidden !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-html = """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
-* {
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    height: 100% !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
+/* ------------------ HARD STOP SCROLL ------------------ */
+html, body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
     overflow: hidden !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    overscroll-behavior: none !important;
-    -webkit-overflow-scrolling: none !important;
-    touch-action: none !important;
-    -ms-touch-action: none !important;
 }
 
+/* ------------------ BACKGROUND ------------------ */
 body {
-    height: 100% !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    background: linear-gradient(135deg, #fbd3e9, #fcefee);
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(
+        120deg,
+        #7c3aed,
+        #ec4899,
+        #3b82f6,
+        #f97316
+    );
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ------------------ CENTER CONTENT ------------------ */
+.container {
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    overscroll-behavior: none !important;
-    -webkit-overflow-scrolling: none !important;
-    touch-action: none !important;
-    -ms-touch-action: none !important;
 }
 
-/* Hide scrollbars */
-::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
-}
-
-* {
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: none;
-}
-
-/* Card */
 .card {
-    background: white;
-    width: min(92vw, 420px);
-    padding: 2rem;
-    border-radius: 22px;
-    box-shadow: 0 25px 55px rgba(0,0,0,0.18);
+    background: rgba(255,255,255,0.95);
+    padding: clamp(32px, 6vw, 56px);
+    border-radius: 24px;
     text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+    width: min(90vw, 420px);
     position: relative;
 }
 
-/* Icon */
-.icon {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
-}
-
-/* Question */
 .question {
-    font-size: 1.35rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 6vw, 40px);
+    margin-bottom: 32px;
     color: #111827;
 }
 
-/* Buttons */
+/* ------------------ BUTTONS ------------------ */
 .buttons {
     display: flex;
+    gap: 20px;
     justify-content: center;
-    gap: 1.6rem;
 }
 
 button {
-    border: none;
-    padding: 0.75rem 2.2rem;
+    padding: 14px 32px;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     border-radius: 999px;
-    font-size: 0.9rem;
+    border: none;
     cursor: pointer;
+    font-weight: 600;
 }
 
-/* YES */
+/* YES BUTTON */
 .yes {
-    background: #ec4899;
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
     color: white;
-    box-shadow: 0 12px 30px rgba(236,72,153,0.45);
+    box-shadow: 0 10px 25px rgba(236,72,153,0.4);
 }
 
-/* NO */
+.yes:hover {
+    transform: translateY(-2px);
+}
+
+/* NO BUTTON (VISIBLE BUT SHY) */
 .no {
     background: #f3f4f6;
     color: #111827;
     border: 1px solid #d1d5db;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     position: relative;
+    touch-action: manipulation;
 }
 
-/* Helper */
-.helper {
-    font-size: 0.75rem;
-    margin-top: 1.3rem;
-    color: #6b7280;
-}
-
-/* Celebrate */
-.celebrate {
-    display: none;
-}
-
-.confetti {
-    position: absolute;
+/* ------------------ MODAL ------------------ */
+.overlay {
+    position: fixed;
     inset: 0;
-    pointer-events: none;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
-.confetti span {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #ec4899;
-    animation: fall 2s linear infinite;
+.modal {
+    background: white;
+    border-radius: 22px;
+    width: min(90vw, 420px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+    overflow: hidden;
 }
 
-@keyframes fall {
-    to { transform: translateY(100vh); }
+.modal-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #7c3aed, #ec4899, #3b82f6);
+}
+
+.modal-content {
+    padding: 36px;
+    text-align: center;
+}
+
+.modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.modal p {
+    color: #4b5563;
+    margin-bottom: 26px;
+}
+
+.close {
+    background: #111827;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 999px;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-    <div id="ask">
-        <div class="icon">🐱💖</div>
+<div class="container" id="main">
+    <div class="card">
         <div class="question">will you be my valentine?</div>
-
         <div class="buttons">
-            <button class="yes" onclick="sayYes()">Yes</button>
+            <button class="yes" onclick="openModal()">Yes</button>
             <button class="no" id="noBtn">No</button>
         </div>
-
-        <div class="helper">the "No" button is feeling shy 🙈</div>
     </div>
+</div>
 
-    <div class="celebrate" id="yay">
-        <div class="icon">🎉</div>
-        <h2>YAY!</h2>
-        <img
-            src="https://media.giphy.com/media/26xBs99iqmmSLYGqY/giphy.gif"
-            style="width:100%; border-radius:14px;"
-        />
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="modal-bar"></div>
+        <div class="modal-content">
+            <h2>Wonderful!</h2>
+            <p>I’m really happy you said yes 💖</p>
+            <button class="close" onclick="closeModal()">Close</button>
+        </div>
     </div>
-
-    <div class="confetti" id="confetti"></div>
 </div>
 
 <script>
-(function() {
-    'use strict';
-    
-    // Store original scroll positions
-    let scrollX = 0;
-    let scrollY = 0;
-    
-    // ULTRA AGGRESSIVE SCROLL LOCK - Multiple methods
-    function ultraLockScroll() {
-        // Method 1: Force scroll to 0
-        if (window.scrollX !== 0 || window.scrollY !== 0) {
-            window.scrollTo(0, 0);
-            window.scroll(0, 0);
-        }
-        
-        // Method 2: Lock document elements
-        if (document.documentElement.scrollTop !== 0 || document.documentElement.scrollLeft !== 0) {
-            document.documentElement.scrollTop = 0;
-            document.documentElement.scrollLeft = 0;
-        }
-        
-        // Method 3: Lock body
-        if (document.body.scrollTop !== 0 || document.body.scrollLeft !== 0) {
-            document.body.scrollTop = 0;
-            document.body.scrollLeft = 0;
-        }
-        
-        // Method 4: Force styles
-        document.documentElement.style.setProperty('overflow', 'hidden', 'important');
-        document.documentElement.style.setProperty('position', 'fixed', 'important');
-        document.documentElement.style.setProperty('top', '0', 'important');
-        document.documentElement.style.setProperty('left', '0', 'important');
-        document.documentElement.style.setProperty('width', '100%', 'important');
-        document.documentElement.style.setProperty('height', '100%', 'important');
-        
-        document.body.style.setProperty('overflow', 'hidden', 'important');
-        document.body.style.setProperty('position', 'fixed', 'important');
-        document.body.style.setProperty('top', '0', 'important');
-        document.body.style.setProperty('left', '0', 'important');
-        document.body.style.setProperty('width', '100%', 'important');
-        document.body.style.setProperty('height', '100%', 'important');
-        
-        // Method 5: Lock all scrollable elements
-        const allElements = document.querySelectorAll('*');
-        allElements.forEach(el => {
-            if (el.scrollTop !== 0 || el.scrollLeft !== 0) {
-                el.scrollTop = 0;
-                el.scrollLeft = 0;
-            }
-            el.style.setProperty('overflow', 'hidden', 'important');
-        });
-        
-        // Continue locking
-        requestAnimationFrame(ultraLockScroll);
-    }
-    
-    // Start immediately
-    ultraLockScroll();
-    
-    // Also use setInterval as backup
-    setInterval(function() {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.documentElement.scrollLeft = 0;
-        document.body.scrollTop = 0;
-        document.body.scrollLeft = 0;
-    }, 10);
-    
-    // Prevent ALL scroll events - Ultra aggressive
-    const killScroll = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        window.scrollTo(0, 0);
-        return false;
-    };
-    
-    // Block every possible scroll event
-    const scrollEvents = [
-        'scroll', 'wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll',
-        'touchstart', 'touchmove', 'touchend', 'touchcancel',
-        'gesturestart', 'gesturechange', 'gestureend',
-        'keydown', 'keyup'
-    ];
-    
-    scrollEvents.forEach(event => {
-        // Add to document
-        document.addEventListener(event, killScroll, { passive: false, capture: true });
-        // Add to documentElement
-        document.documentElement.addEventListener(event, killScroll, { passive: false, capture: true });
-        // Add to body
-        document.body.addEventListener(event, killScroll, { passive: false, capture: true });
-        // Add to window
-        window.addEventListener(event, killScroll, { passive: false, capture: true });
-    });
-    
-    // Prevent keyboard scrolling
-    document.addEventListener('keydown', function(e) {
-        if ([32, 33, 34, 35, 36, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-            e.preventDefault();
-            return false;
-        }
-    }, { passive: false, capture: true });
-    
-    // Prevent touch scrolling but allow button interactions
-    let lastTouchY = 0;
-    let touchStartElement = null;
-    
-    document.addEventListener('touchstart', function(e) {
-        // Allow touch on buttons and interactive elements
-        const target = e.target;
-        if (target.tagName === 'BUTTON' || target.closest('button')) {
-            touchStartElement = target;
-            return; // Don't prevent, allow button to handle
-        }
-        lastTouchY = e.touches[0].clientY;
-        touchStartElement = null;
-        e.preventDefault();
-    }, { passive: false, capture: true });
-    
-    document.addEventListener('touchmove', function(e) {
-        // Allow touch move on buttons
-        const target = e.target;
-        if (target.tagName === 'BUTTON' || target.closest('button') || touchStartElement) {
-            // Don't prevent if it's on a button
-            return;
-        }
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }, { passive: false, capture: true });
-    
-    // Lock on any event
-    ['resize', 'orientationchange', 'load', 'DOMContentLoaded'].forEach(event => {
-        window.addEventListener(event, function() {
-            setTimeout(function() {
-                window.scrollTo(0, 0);
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-            }, 0);
-        });
-    });
-    
-    // MutationObserver to watch for style changes
-    const observer = new MutationObserver(function() {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-    });
-    
-    observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['style', 'class'],
-        childList: true,
-        subtree: true
-    });
-    
-    observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['style', 'class'],
-        childList: true,
-        subtree: true
-    });
-})();
-
 const noBtn = document.getElementById("noBtn");
 
-function moveAway(e) {
-    // Calculate safe position within viewport
-    const btnWidth = noBtn.offsetWidth || 140;
-    const btnHeight = noBtn.offsetHeight || 40;
-    const maxX = window.innerWidth - btnWidth;
-    const maxY = window.innerHeight - btnHeight;
-    
+function moveAway() {
+    const bw = noBtn.offsetWidth;
+    const bh = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - bw - 12;
+    const maxY = window.innerHeight - bh - 12;
+
     const x = Math.random() * maxX;
     const y = Math.random() * maxY;
-    
+
     noBtn.style.position = "fixed";
-    noBtn.style.left = Math.max(0, Math.min(x, maxX)) + "px";
-    noBtn.style.top = Math.max(0, Math.min(y, maxY)) + "px";
-    noBtn.style.zIndex = "1000";
-    
-    // Prevent default but allow the movement
-    if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 }
 
-// Desktop events
-noBtn.addEventListener("mouseenter", moveAway);
-noBtn.addEventListener("mousemove", function(e) {
-    // Only move if mouse is actually over the button
-    const rect = noBtn.getBoundingClientRect();
-    if (e.clientX >= rect.left && e.clientX <= rect.right && 
-        e.clientY >= rect.top && e.clientY <= rect.bottom) {
-        moveAway(e);
-    }
+/* Pointer events = iOS safe */
+noBtn.addEventListener("pointerenter", moveAway);
+noBtn.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    moveAway();
 });
+noBtn.addEventListener("click", e => e.preventDefault());
 
-// Mobile touch events - more aggressive
-noBtn.addEventListener("touchstart", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    moveAway(e);
-}, { passive: false });
-
-noBtn.addEventListener("touchmove", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    moveAway(e);
-}, { passive: false });
-
-noBtn.addEventListener("touchend", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    // Move again on touch end
-    setTimeout(() => moveAway(e), 50);
-}, { passive: false });
-
-// Prevent clicks but allow movement
-noBtn.addEventListener("click", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    moveAway(e);
-    return false;
-}, { passive: false });
-
-noBtn.addEventListener("mousedown", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    moveAway(e);
-}, { passive: false });
-
-noBtn.addEventListener("mouseup", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-}, { passive: false });
-
-function sayYes() {
-    document.getElementById("ask").style.display = "none";
-    document.getElementById("yay").style.display = "block";
-    launchConfetti();
+function openModal() {
+    document.getElementById("overlay").style.display = "flex";
 }
 
-function launchConfetti() {
-    const confetti = document.getElementById("confetti");
-    for (let i = 0; i < 40; i++) {
-        const piece = document.createElement("span");
-        piece.style.left = Math.random() * 100 + "%";
-        piece.style.animationDuration = (1 + Math.random() * 2) + "s";
-        confetti.appendChild(piece);
-    }
+function closeModal() {
+    document.getElementById("overlay").style.display = "none";
 }
 </script>
 
 </body>
 </html>
-"""
-
-# ⚠️ height=1 is intentional - prevents iframe scrolling
-components.html(html, height=1, scrolling=False)
+""",
+    height=1000,
+)
