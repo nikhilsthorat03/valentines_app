@@ -389,14 +389,29 @@ button {
         }
     }, { passive: false, capture: true });
     
-    // Prevent touch scrolling completely
+    // Prevent touch scrolling but allow button interactions
     let lastTouchY = 0;
+    let touchStartElement = null;
+    
     document.addEventListener('touchstart', function(e) {
+        // Allow touch on buttons and interactive elements
+        const target = e.target;
+        if (target.tagName === 'BUTTON' || target.closest('button')) {
+            touchStartElement = target;
+            return; // Don't prevent, allow button to handle
+        }
         lastTouchY = e.touches[0].clientY;
+        touchStartElement = null;
         e.preventDefault();
     }, { passive: false, capture: true });
     
     document.addEventListener('touchmove', function(e) {
+        // Allow touch move on buttons
+        const target = e.target;
+        if (target.tagName === 'BUTTON' || target.closest('button') || touchStartElement) {
+            // Don't prevent if it's on a button
+            return;
+        }
         e.preventDefault();
         e.stopPropagation();
         return false;
@@ -437,21 +452,77 @@ button {
 
 const noBtn = document.getElementById("noBtn");
 
-function moveAway() {
-    const x = Math.random() * (window.innerWidth - 140);
-    const y = Math.random() * (window.innerHeight - 100);
+function moveAway(e) {
+    // Calculate safe position within viewport
+    const btnWidth = noBtn.offsetWidth || 140;
+    const btnHeight = noBtn.offsetHeight || 40;
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+    
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    
     noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    noBtn.style.left = Math.max(0, Math.min(x, maxX)) + "px";
+    noBtn.style.top = Math.max(0, Math.min(y, maxY)) + "px";
+    noBtn.style.zIndex = "1000";
+    
+    // Prevent default but allow the movement
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
 }
 
+// Desktop events
 noBtn.addEventListener("mouseenter", moveAway);
-noBtn.addEventListener("mousemove", moveAway);
-noBtn.addEventListener("touchstart", moveAway);
+noBtn.addEventListener("mousemove", function(e) {
+    // Only move if mouse is actually over the button
+    const rect = noBtn.getBoundingClientRect();
+    if (e.clientX >= rect.left && e.clientX <= rect.right && 
+        e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        moveAway(e);
+    }
+});
 
-["click","mousedown","mouseup","touchend"].forEach(evt =>
-    noBtn.addEventListener(evt, e => e.preventDefault())
-);
+// Mobile touch events - more aggressive
+noBtn.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    moveAway(e);
+}, { passive: false });
+
+noBtn.addEventListener("touchmove", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    moveAway(e);
+}, { passive: false });
+
+noBtn.addEventListener("touchend", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // Move again on touch end
+    setTimeout(() => moveAway(e), 50);
+}, { passive: false });
+
+// Prevent clicks but allow movement
+noBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    moveAway(e);
+    return false;
+}, { passive: false });
+
+noBtn.addEventListener("mousedown", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    moveAway(e);
+}, { passive: false });
+
+noBtn.addEventListener("mouseup", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}, { passive: false });
 
 function sayYes() {
     document.getElementById("ask").style.display = "none";
