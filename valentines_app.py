@@ -69,7 +69,7 @@ html, body {
 }
 
 body {
-    background: linear-gradient(135deg, #fbd3e9, #fcefee);
+    background: linear-gradient(135deg,#fff0f8 0%, #ffd6ee 30%, #ff8acb 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,65 +77,76 @@ body {
 
 /* Card */
 .card {
-    background: white;
-    width: min(92vw, 420px);
-    padding: 2rem;
-    border-radius: 22px;
-    box-shadow: 0 25px 55px rgba(0,0,0,0.18);
+    background: linear-gradient(180deg, #fff5fb 0%, #ffe6f6 50%, #ffd6f0 100%);
+    width: min(92vw, 760px);
+    padding: 2.25rem 2.6rem;
+    border-radius: 28px;
+    box-shadow: 0 30px 80px rgba(255,20,147,0.12), inset 0 1px 0 rgba(255,255,255,0.15);
     text-align: center;
     position: relative;
+    color: #3b0b2e;
+    border: 1px solid rgba(255,255,255,0.06);
 }
 
 /* Icon */
 .icon {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+    font-size: 3.8rem;
+    margin-bottom: 0.6rem;
 }
 
 /* Question */
 .question {
-    font-size: 1.35rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-    color: #111827;
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #3b0b2e;
 }
 
 /* Buttons */
 .buttons {
     display: flex;
     justify-content: center;
-    gap: 1.6rem;
+    gap: 1.4rem;
+    align-items: center;
 }
 
 button {
     border: none;
-    padding: 0.75rem 2.2rem;
+    padding: 0.9rem 2.6rem;
     border-radius: 999px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     cursor: pointer;
+    transition: transform 280ms cubic-bezier(.2,.9,.2,1), width 280ms ease, opacity 220ms ease;
 }
 
 /* YES */
 .yes {
-    background: #ec4899;
+    background: linear-gradient(90deg,#ff3a90,#ff85b6);
     color: white;
-    box-shadow: 0 12px 30px rgba(236,72,153,0.45);
+    box-shadow: 0 18px 50px rgba(255,90,150,0.18), 0 6px 18px rgba(0,0,0,0.18);
+    font-weight: 800;
+    width: 13rem;
+    padding: 1rem 2.8rem;
+    font-size: 1.05rem;
+    border-radius: 999px;
 }
 
 /* NO */
 .no {
-    background: #f3f4f6;
-    color: #111827;
-    border: 1px solid #d1d5db;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+    background: linear-gradient(180deg,#fff0f5,#ffdff0);
+    color: #7a0b36;
+    border: 2px solid rgba(255,90,150,0.18);
+    box-shadow: 0 10px 30px rgba(255,90,150,0.06);
     position: relative;
+    width: 7.2rem;
+    padding: 0.9rem 1.2rem;
+    font-weight: 600;
 }
 
-/* Helper */
 .helper {
-    font-size: 0.75rem;
-    margin-top: 1.3rem;
-    color: #6b7280;
+    font-size: 0.95rem;
+    margin-top: 0.8rem;
+    color: #9d1646;
 }
 
 /* Celebrate */
@@ -153,13 +164,40 @@ button {
     position: absolute;
     width: 8px;
     height: 8px;
-    background: #ec4899;
+    background: #ff69b4;
     animation: fall 2s linear infinite;
 }
 
 @keyframes fall {
     to { transform: translateY(100vh); }
 }
+
+/* Popup */
+.popup {
+    position: fixed;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%) scale(0.92);
+    background: linear-gradient(180deg, rgba(255,20,147,0.12), rgba(255,105,180,0.06));
+    color: #fff;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    z-index: 9999;
+    max-width: 92vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+.popup.show { opacity: 1; transform: translateX(-50%) scale(1); pointer-events: auto; }
+.popup img { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; }
+.popup .txt { font-size: 0.98rem; color: #fff; }
+
+.small-note { font-size: 0.78rem; color: #ffd6f0; margin-top: 0.6rem; }
+
 </style>
 </head>
 
@@ -167,47 +205,97 @@ button {
 
 <div class="card">
     <div id="ask">
-        <div class="icon">🐱💖</div>
-        <div class="question">will you be my valentine?</div>
+        <div class="icon">😽💗</div>
+        <div class="question">Will you be my valentine? ✨💘</div>
 
         <div class="buttons">
-            <button class="yes" onclick="sayYes()">Yes</button>
-            <button class="no" id="noBtn">No</button>
+            <button class="yes" id="yesBtn" onclick="sayYes()">Yes! 😍</button>
+            <button class="no" id="noBtn">No... 😅</button>
         </div>
 
-        <div class="helper">the "No" button is feeling shy 🙈</div>
+        <div class="helper">Click No at your own risk... 😈💥</div>
+        <div class="small-note">Click the pink button to accept the offer 😉</div>
     </div>
 
     <div class="celebrate" id="yay">
         <div class="icon">🎉</div>
-        <h2>YAY!</h2>
+        <h2>YAY! You're the best 💖</h2>
         <img
-            src="https://media.giphy.com/media/26xBs99iqmmSLYGqY/giphy.gif"
-            style="width:100%; border-radius:14px;"
+            src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+            style="width:100%; border-radius:14px; margin-top:8px;"
         />
     </div>
 
     <div class="confetti" id="confetti"></div>
 </div>
 
+<div class="popup" id="popup">
+    <img id="popupGif" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
+    <div class="txt" id="popupTxt">aww, come on! 😿</div>
+</div>
+
 <script>
 const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const popup = document.getElementById("popup");
+const popupTxt = document.getElementById("popupTxt");
+const popupGif = document.getElementById("popupGif");
 
-function moveAway() {
-    const x = Math.random() * (window.innerWidth - 140);
-    const y = Math.random() * (window.innerHeight - 100);
-    noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+let noClickCount = 0;
+
+const messages = [
+    { txt: "aww, don't be shy! 😿", gif: "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" },
+    { txt: "I baked cookies 🍪 just for you!", gif: "https://media.giphy.com/media/3o6ZsY7Zb9k6k8fQ2A/giphy.gif" },
+    { txt: "We can watch silly cat vids 🐱🎬", gif: "https://media.giphy.com/media/26u4nJPf0JtQPdStq/giphy.gif" },
+    { txt: "Pretty please? 🌸✨", gif: "https://media.giphy.com/media/xUPGcyi3G2v6j1V0kY/giphy.gif" },
+    { txt: "You're too cute to refuse 😽💖", gif: "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" },
+    { txt: "Ok last one — wink wink 😉", gif: "https://media.giphy.com/media/l0MYKzNQ2w5zQk1y0/giphy.gif" },
+    { txt: "Fine... I'm turning up the charm! 💫", gif: "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" }
+];
+
+function showPopup(msgObj) {
+    popupTxt.textContent = msgObj.txt;
+    popupGif.src = msgObj.gif;
+    popup.classList.add('show');
+    clearTimeout(popup._hideTimeout);
+    popup._hideTimeout = setTimeout(() => popup.classList.remove('show'), 2500);
 }
 
-noBtn.addEventListener("mouseenter", moveAway);
-noBtn.addEventListener("mousemove", moveAway);
-noBtn.addEventListener("touchstart", moveAway);
+function handleNoClick(e) {
+    e.stopPropagation();
+    noClickCount = Math.min(noClickCount + 1, 100);
+    const idx = Math.min(noClickCount - 1, messages.length - 1);
+    showPopup(messages[idx]);
 
-["click","mousedown","mouseup","touchend"].forEach(evt =>
-    noBtn.addEventListener(evt, e => e.preventDefault())
-);
+    // Gradually make YES bigger and NO smaller
+    const grow = 1 + Math.min(noClickCount * 0.08, 1.5); // up to ~2.5x
+    const shrink = Math.max(1 - Math.min(noClickCount * 0.06, 0.7), 0.35);
+    yesBtn.style.transform = `scale(${grow})`;
+    noBtn.style.transform = `scale(${shrink})`;
+    noBtn.style.opacity = `${Math.max(0.35, shrink)}`;
+
+    // playful nudge: move No to a cute spot occasionally (every 5 clicks)
+    if (noClickCount % 5 === 0) {
+        moveAwayShort();
+    }
+}
+
+function moveAwayShort() {
+    const margin = 120;
+    const x = Math.random() * (window.innerWidth - margin);
+    const y = Math.random() * (window.innerHeight - margin);
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+}
+
+// re-enable hover movement: moves away when hovered or touched
+noBtn.addEventListener('mouseenter', moveAwayShort);
+noBtn.addEventListener('mousemove', moveAwayShort);
+noBtn.addEventListener('touchstart', moveAwayShort);
+
+noBtn.addEventListener('click', handleNoClick);
+noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); handleNoClick(e); });
 
 function sayYes() {
     document.getElementById("ask").style.display = "none";
@@ -217,11 +305,16 @@ function sayYes() {
 
 function launchConfetti() {
     const confetti = document.getElementById("confetti");
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 60; i++) {
         const piece = document.createElement("span");
         piece.style.left = Math.random() * 100 + "%";
-        piece.style.animationDuration = (1 + Math.random() * 2) + "s";
+        piece.style.background = ['#ff6aa7','#ff2d95','#ffb6da','gold'][Math.floor(Math.random()*4)];
+        piece.style.width = (6+Math.random()*10) + 'px';
+        piece.style.height = piece.style.width;
+        piece.style.animationDuration = (1 + Math.random() * 2.5) + "s";
+        piece.style.top = (-20 - Math.random()*40) + 'px';
         confetti.appendChild(piece);
+        setTimeout(()=> piece.remove(), 4000);
     }
 }
 </script>
