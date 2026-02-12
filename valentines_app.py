@@ -73,6 +73,36 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Floating hearts background */
+.floating-hearts {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-hearts span {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.4;
+    animation: floatUp 8s ease-in infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.2; }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 /* Card */
@@ -86,12 +116,32 @@ body {
     position: relative;
     color: #3b0b2e;
     border: 1px solid rgba(255,255,255,0.06);
+    z-index: 2;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Icon */
 .icon {
     font-size: 3.8rem;
     margin-bottom: 0.6rem;
+    animation: bounce 2s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.1); }
 }
 
 /* Question */
@@ -99,7 +149,17 @@ body {
     font-size: 1.9rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
-    color: #3b0b2e;
+    background: linear-gradient(90deg, #ff1493, #ff69b4, #ff1493);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
 }
 
 /* Buttons */
@@ -129,6 +189,30 @@ button {
     padding: 1rem 2.8rem;
     font-size: 1.05rem;
     border-radius: 999px;
+    animation: pulse 2s ease-in-out infinite;
+    position: relative;
+}
+
+.yes::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff3a90, #ff85b6);
+    opacity: 0;
+    animation: glow 2s ease-in-out infinite;
+    z-index: -1;
+    filter: blur(12px);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes glow {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.6; }
 }
 
 /* NO */
@@ -147,6 +231,14 @@ button {
     font-size: 0.95rem;
     margin-top: 0.8rem;
     color: #9d1646;
+    animation: shake 3s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
 }
 
 /* Celebrate */
@@ -196,17 +288,62 @@ button {
 .popup img { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; }
 .popup .txt { font-size: 0.98rem; color: #fff; }
 
-.small-note { font-size: 0.78rem; color: #ffd6f0; margin-top: 0.6rem; }
+.small-note {
+    font-size: 0.78rem;
+    color: #ffd6f0;
+    margin-top: 0.6rem;
+    animation: fadeInOut 3s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Sparkles */
+.sparkles {
+    position: absolute;
+    inset: -50px;
+    pointer-events: none;
+}
+
+.sparkles span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: gold;
+    border-radius: 50%;
+    animation: sparkle 3s ease-in-out infinite;
+    box-shadow: 0 0 10px gold;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
 </style>
 </head>
 
 <body>
 
+<div class="floating-hearts" id="floatingHearts"></div>
+
 <div class="card">
+    <div class="sparkles" id="sparkles"></div>
     <div id="ask">
-        <div class="icon">😽💗</div>
-        <div class="question">Will you be my valentine? ✨💘</div>
+        <div class="icon">
+            <span style="display: inline-block; animation: bounce 2s ease-in-out infinite;">😽</span>
+            <span style="display: inline-block; animation: bounce 2s ease-in-out 0.2s infinite;">💗</span>
+            <span style="display: inline-block; animation: bounce 2s ease-in-out 0.4s infinite;">✨</span>
+        </div>
+        <div class="question">Malavika, will you go on a Valentine's date with me? ✨💘</div>
 
         <div class="buttons">
             <button class="yes" id="yesBtn" onclick="sayYes()">Yes! 😍</button>
@@ -218,10 +355,15 @@ button {
     </div>
 
     <div class="celebrate" id="yay">
-        <div class="icon">🎉</div>
-        <h2>YAY! You're the best 💖</h2>
+        <div class="icon">🎉🥳</div>
+        <h2>YESSS! IT'S A DATE! 💖✨</h2>
+        <p style="font-size: 1.3rem; font-weight: 600; color: #3b0b2e; margin: 1rem 0;">
+            14th Feb @ 8:30 PM<br>
+            I'll pick you up! 🚗💨<br>
+            <span style="font-size: 1.1rem; color: #ff1493;">Location: It's a surprise! 🎁✨</span>
+        </p>
         <img
-            src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+            src="https://media.giphy.com/media/g9582DNuQppxC/giphy.gif"
             style="width:100%; border-radius:14px; margin-top:8px;"
         />
     </div>
@@ -317,6 +459,50 @@ function launchConfetti() {
         setTimeout(()=> piece.remove(), 4000);
     }
 }
+
+// Create floating hearts
+function createFloatingHearts() {
+    const container = document.getElementById("floatingHearts");
+    const hearts = ['💖', '💝', '💗', '💓', '💕', '❤️', '💘'];
+
+    setInterval(() => {
+        const heart = document.createElement("span");
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + "%";
+        heart.style.fontSize = (1 + Math.random() * 1.5) + "rem";
+        heart.style.animationDuration = (6 + Math.random() * 4) + "s";
+        heart.style.animationDelay = Math.random() * 2 + "s";
+        container.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 10000);
+    }, 800);
+}
+
+// Create sparkles around card
+function createSparkles() {
+    const container = document.getElementById("sparkles");
+    const positions = [
+        { top: '10%', left: '5%' },
+        { top: '20%', right: '8%' },
+        { top: '50%', left: '2%' },
+        { top: '70%', right: '5%' },
+        { top: '85%', left: '10%' },
+        { top: '15%', right: '15%' },
+        { bottom: '15%', left: '12%' },
+        { bottom: '25%', right: '10%' }
+    ];
+
+    positions.forEach((pos, i) => {
+        const sparkle = document.createElement("span");
+        Object.assign(sparkle.style, pos);
+        sparkle.style.animationDelay = (i * 0.3) + "s";
+        container.appendChild(sparkle);
+    });
+}
+
+// Initialize animations
+createFloatingHearts();
+createSparkles();
 </script>
 
 </body>
