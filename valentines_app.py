@@ -264,29 +264,10 @@ button {
     to { transform: translateY(100vh); }
 }
 
-/* Popup */
+/* Popup - Hidden */
 .popup {
-    position: fixed;
-    left: 50%;
-    top: 10%;
-    transform: translateX(-50%) scale(0.92);
-    background: linear-gradient(180deg, rgba(255,20,147,0.12), rgba(255,105,180,0.06));
-    color: #fff;
-    padding: 0.8rem 1rem;
-    border-radius: 12px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    z-index: 9999;
-    max-width: 92vw;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 220ms ease, transform 220ms ease;
+    display: none !important;
 }
-.popup.show { opacity: 1; transform: translateX(-50%) scale(1); pointer-events: auto; }
-.popup img { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; }
-.popup .txt { font-size: 0.98rem; color: #fff; }
 
 .small-note {
     font-size: 0.78rem;
@@ -406,8 +387,6 @@ function showPopup(msgObj) {
 function handleNoClick(e) {
     e.stopPropagation();
     noClickCount = Math.min(noClickCount + 1, 100);
-    const idx = Math.min(noClickCount - 1, messages.length - 1);
-    showPopup(messages[idx]);
 
     // Gradually make YES bigger and NO smaller
     const grow = 1 + Math.min(noClickCount * 0.08, 1.5); // up to ~2.5x
@@ -416,10 +395,8 @@ function handleNoClick(e) {
     noBtn.style.transform = `scale(${shrink})`;
     noBtn.style.opacity = `${Math.max(0.35, shrink)}`;
 
-    // playful nudge: move No to a cute spot occasionally (every 5 clicks)
-    if (noClickCount % 5 === 0) {
-        moveAwayShort();
-    }
+    // Move button on every click
+    moveAwayShort();
 }
 
 function moveAwayShort() {
