@@ -339,8 +339,8 @@ button {
 I know, perfect timing right? 😏✨</div>
 
         <div class="buttons">
-            <button class="yes" id="yesBtn" onclick="sayYes()">Let's do it! 😊</button>
-            <button class="no" id="noBtn">Maybe not 😅</button>
+            <button class="yes" id="yesBtn" onclick="sayYes()">Yes! 😊</button>
+            <button class="no" id="noBtn">No 😅</button>
         </div>
 
         <div class="helper">No pressure, just good vibes ✨</div>
