@@ -52,13 +52,14 @@ html = """
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 * {
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
     -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 html, body {
@@ -77,39 +78,33 @@ body {
     overflow: hidden;
 }
 
-/* Floating hearts background */
-.floating-hearts {
+/* Floating background */
+.floating-bg {
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 1;
 }
 
-.floating-hearts span {
+.floating-bg span {
     position: absolute;
     font-size: 2rem;
-    opacity: 0.15;
+    opacity: 0.12;
     animation: floatUp 8s ease-in infinite;
 }
 
 @keyframes floatUp {
-    0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-    }
-    10% { opacity: 0.4; }
-    90% { opacity: 0.2; }
-    100% {
-        transform: translateY(-100px) rotate(360deg);
-        opacity: 0;
-    }
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.08; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
 }
 
-/* Card */
+/* Main card */
 .card {
     background: linear-gradient(180deg, #ffffff 0%, #faf8f6 50%, #f5f2ef 100%);
     width: min(92vw, 760px);
-    padding: 2.25rem 2.6rem;
+    padding: 2.25rem 2rem;
     border-radius: 28px;
     box-shadow: 0 30px 80px rgba(139, 100, 80, 0.08), inset 0 1px 0 rgba(255,255,255,0.4);
     text-align: center;
@@ -117,35 +112,191 @@ body {
     color: #5a4a42;
     border: 1px solid rgba(212, 196, 184, 0.2);
     z-index: 2;
-    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Stage containers */
+.stage {
+    display: none;
+    animation: fadeIn 0.6s ease;
 }
 
-/* Icon */
-.icon {
-    font-size: 3.8rem;
+.stage.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== STAGE 1: INTRO ===== */
+.intro-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.intro-subtitle {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #c9a68e;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.intro-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #5a4a42;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+.tap-hint {
+    font-size: 0.85rem;
+    color: #c9a68e;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* ===== STAGE 2: CARDS ===== */
+.cards-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #5a4a42;
+    margin-bottom: 1.2rem;
+}
+
+.cards-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.flip-card {
+    width: 100px;
+    height: 140px;
+    perspective: 600px;
+    cursor: pointer;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem;
+}
+
+.flip-card-front {
+    background: linear-gradient(135deg, #b8856a, #c9a68e);
+    color: white;
+    font-size: 2rem;
+    box-shadow: 0 8px 25px rgba(184, 133, 106, 0.2);
+}
+
+.flip-card-back {
+    background: linear-gradient(180deg, #fff, #faf8f6);
+    color: #5a4a42;
+    transform: rotateY(180deg);
+    border: 2px solid rgba(184, 133, 106, 0.15);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.cards-progress {
+    font-size: 0.8rem;
+    color: #c9a68e;
+    margin-top: 0.5rem;
+}
+
+/* ===== STAGE 3: COMPATIBILITY ===== */
+.compat-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #5a4a42;
+    margin-bottom: 1.5rem;
+}
+
+.meter-container {
+    background: #f0ebe5;
+    border-radius: 999px;
+    height: 28px;
+    width: 85%;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #c9a68e, #b8856a, #a06b4a);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+}
+
+.meter-percent {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #b8856a, #c9a68e, #b8856a);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2s linear infinite;
+    margin-bottom: 0.5rem;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+.meter-status {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #9d7961;
+    min-height: 1.5rem;
+}
+
+/* ===== STAGE 4: THE QUESTION ===== */
+.question-icon {
+    font-size: 3rem;
     margin-bottom: 0.6rem;
-    animation: bounce 2s ease-in-out infinite;
-    display: inline-block;
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-15px) scale(1.1); }
-}
-
-/* Subtitle */
-.subtitle {
+.question-subtitle {
     font-size: 0.85rem;
     font-weight: 500;
     color: #c9a68e;
@@ -154,9 +305,8 @@ body {
     text-transform: uppercase;
 }
 
-/* Question */
-.question {
-    font-size: 1.9rem;
+.question-text {
+    font-size: 1.7rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
     background: linear-gradient(90deg, #b8856a, #c9a68e, #b8856a);
@@ -165,14 +315,9 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: shimmer 3s linear infinite;
+    line-height: 1.3;
 }
 
-@keyframes shimmer {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-/* Buttons */
 .buttons {
     display: flex;
     justify-content: center;
@@ -189,7 +334,6 @@ button {
     transition: transform 280ms cubic-bezier(.2,.9,.2,1), width 280ms ease, opacity 220ms ease;
 }
 
-/* YES */
 .yes {
     background: linear-gradient(90deg, #b8856a, #c9a68e);
     color: white;
@@ -199,7 +343,7 @@ button {
     padding: 1rem 2.8rem;
     font-size: 1.05rem;
     border-radius: 999px;
-    animation: pulse 2s ease-in-out infinite;
+    animation: btnPulse 2s ease-in-out infinite;
     position: relative;
 }
 
@@ -215,7 +359,7 @@ button {
     filter: blur(12px);
 }
 
-@keyframes pulse {
+@keyframes btnPulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
 }
@@ -225,7 +369,6 @@ button {
     50% { opacity: 0.6; }
 }
 
-/* NO */
 .no {
     background: linear-gradient(180deg, #faf8f6, #f0ebe5);
     color: #8b6450;
@@ -241,19 +384,17 @@ button {
     font-size: 0.95rem;
     margin-top: 0.8rem;
     color: #9d7961;
-    animation: shake 3s ease-in-out infinite;
-    display: inline-block;
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-3px); }
-    75% { transform: translateX(3px); }
-}
-
-/* Celebrate */
+/* ===== STAGE 5: CELEBRATE ===== */
 .celebrate {
     display: none;
+}
+
+.celebrate h2 {
+    font-size: 1.5rem;
+    color: #5a4a42;
+    margin-bottom: 0.5rem;
 }
 
 .confetti {
@@ -274,23 +415,6 @@ button {
     to { transform: translateY(100vh); }
 }
 
-/* Popup - Hidden */
-.popup {
-    display: none !important;
-}
-
-.small-note {
-    font-size: 0.78rem;
-    color: #c9a68e;
-    margin-top: 0.6rem;
-    animation: fadeInOut 3s ease-in-out infinite;
-}
-
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
-}
-
 /* Sparkles */
 .sparkles {
     position: absolute;
@@ -309,14 +433,8 @@ button {
 }
 
 @keyframes sparkle {
-    0%, 100% {
-        opacity: 0;
-        transform: scale(0);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
 }
 
 </style>
@@ -324,19 +442,62 @@ button {
 
 <body>
 
-<div class="floating-hearts" id="floatingHearts"></div>
+<div class="floating-bg" id="floatingBg"></div>
 
 <div class="card">
     <div class="sparkles" id="sparkles"></div>
-    <div id="ask">
-        <div class="icon">
-            <span style="display: inline-block; animation: bounce 2s ease-in-out infinite;">😊</span>
-            <span style="display: inline-block; animation: bounce 2s ease-in-out 0.2s infinite;">🌟</span>
-            <span style="display: inline-block; animation: bounce 2s ease-in-out 0.4s infinite;">✨</span>
+
+    <!-- STAGE 1: INTRO -->
+    <div class="stage active" id="stage1" onclick="goToStage(2)">
+        <div class="intro-icon">✨</div>
+        <div class="intro-subtitle">Valentine's: The Sequel 🎬</div>
+        <div class="intro-title">Hey Malavika...<br>I made something for you 😊</div>
+        <div class="tap-hint">tap to see what's up 👀</div>
+    </div>
+
+    <!-- STAGE 2: CARD PICK -->
+    <div class="stage" id="stage2">
+        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🃏</div>
+        <div class="cards-title">Pick your cards</div>
+        <div class="cards-row">
+            <div class="flip-card" onclick="flipCard(this, 0)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">?</div>
+                    <div class="flip-card-back">First date? Nailed it. ✅</div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="flipCard(this, 1)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">?</div>
+                    <div class="flip-card-back">Vibe check? Off the charts 📊</div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="flipCard(this, 2)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">?</div>
+                    <div class="flip-card-back">The universe says... keep reading 🔮</div>
+                </div>
+            </div>
         </div>
-        <div class="subtitle">Valentine's: The Sequel 🎬</div>
-        <div class="question">So Malavika... second date on Valentine's?
-I know, perfect timing right? 😏✨</div>
+        <div class="cards-progress" id="cardsProgress">Tap each card to reveal 👆</div>
+    </div>
+
+    <!-- STAGE 3: COMPATIBILITY METER -->
+    <div class="stage" id="stage3">
+        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
+        <div class="compat-title">Running compatibility check...</div>
+        <div class="meter-percent" id="meterPercent">0%</div>
+        <div class="meter-container">
+            <div class="meter-fill" id="meterFill"></div>
+        </div>
+        <div class="meter-status" id="meterStatus"></div>
+    </div>
+
+    <!-- STAGE 4: THE QUESTION -->
+    <div class="stage" id="stage4">
+        <div class="question-icon">😊🌟✨</div>
+        <div class="question-subtitle">Valentine's: The Sequel 🎬</div>
+        <div class="question-text">So Malavika... second date on Valentine's?<br>Perfect timing right? 😏✨</div>
 
         <div class="buttons">
             <button class="yes" id="yesBtn" onclick="sayYes()">Yes! 😊</button>
@@ -346,8 +507,9 @@ I know, perfect timing right? 😏✨</div>
         <div class="helper">No pressure, just good vibes ✨</div>
     </div>
 
-    <div class="celebrate" id="yay">
-        <div class="icon">🎉😊</div>
+    <!-- STAGE 5: CELEBRATION -->
+    <div class="stage" id="stage5">
+        <div style="font-size: 3.5rem; margin-bottom: 0.5rem; animation: float 2s ease-in-out infinite;">🎉😊</div>
         <h2>Awesome! Date #2 locked in! ✨</h2>
         <p style="font-size: 1.3rem; font-weight: 600; color: #5a4a42; margin: 1rem 0;">
             14th Feb @ 8:30 PM<br>
@@ -363,50 +525,91 @@ I know, perfect timing right? 😏✨</div>
     <div class="confetti" id="confetti"></div>
 </div>
 
-<div class="popup" id="popup">
-    <img id="popupGif" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
-    <div class="txt" id="popupTxt">aww, come on! 😿</div>
-</div>
-
 <script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const popup = document.getElementById("popup");
-const popupTxt = document.getElementById("popupTxt");
-const popupGif = document.getElementById("popupGif");
+// ===== STAGE MANAGEMENT =====
+function goToStage(num) {
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    const stage = document.getElementById('stage' + num);
+    stage.classList.add('active');
+    stage.style.animation = 'none';
+    stage.offsetHeight; // trigger reflow
+    stage.style.animation = 'fadeIn 0.6s ease';
 
-let noClickCount = 0;
-
-const messages = [
-    { txt: "aww, don't be shy! 😿", gif: "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" },
-    { txt: "I baked cookies 🍪 just for you!", gif: "https://media.giphy.com/media/3o6ZsY7Zb9k6k8fQ2A/giphy.gif" },
-    { txt: "We can watch silly cat vids 🐱🎬", gif: "https://media.giphy.com/media/26u4nJPf0JtQPdStq/giphy.gif" },
-    { txt: "Pretty please? 🌸✨", gif: "https://media.giphy.com/media/xUPGcyi3G2v6j1V0kY/giphy.gif" },
-    { txt: "You're too cute to refuse 😽💖", gif: "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" },
-    { txt: "Ok last one — wink wink 😉", gif: "https://media.giphy.com/media/l0MYKzNQ2w5zQk1y0/giphy.gif" },
-    { txt: "Fine... I'm turning up the charm! 💫", gif: "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" }
-];
-
-function showPopup(msgObj) {
-    popupTxt.textContent = msgObj.txt;
-    popupGif.src = msgObj.gif;
-    popup.classList.add('show');
-    clearTimeout(popup._hideTimeout);
-    popup._hideTimeout = setTimeout(() => popup.classList.remove('show'), 2500);
+    if (num === 3) startCompatibility();
 }
+
+// ===== STAGE 2: CARD FLIP =====
+let cardsFlipped = 0;
+
+function flipCard(el, idx) {
+    if (el.classList.contains('flipped')) return;
+    el.classList.add('flipped');
+    cardsFlipped++;
+
+    const progress = document.getElementById('cardsProgress');
+    if (cardsFlipped === 1) progress.textContent = '1 of 3 revealed... keep going! 🔥';
+    if (cardsFlipped === 2) progress.textContent = '2 of 3... one more! 👀';
+    if (cardsFlipped === 3) {
+        progress.textContent = 'All cards revealed! ✨';
+        setTimeout(() => goToStage(3), 1200);
+    }
+}
+
+// ===== STAGE 3: COMPATIBILITY METER =====
+function startCompatibility() {
+    const fill = document.getElementById('meterFill');
+    const percent = document.getElementById('meterPercent');
+    const status = document.getElementById('meterStatus');
+    let current = 0;
+    const target = 110;
+
+    const messages = [
+        { at: 0, text: 'Initializing... 🔄' },
+        { at: 15, text: 'Analyzing vibes... 🎵' },
+        { at: 35, text: 'Checking humor compatibility... 😂' },
+        { at: 55, text: 'Looking good... 👀' },
+        { at: 75, text: 'Oh wow... 🫣' },
+        { at: 90, text: 'Wait... is this right?! 😳' },
+        { at: 105, text: 'COMPATIBILITY OVERLOAD 🔥' }
+    ];
+
+    const interval = setInterval(() => {
+        current++;
+        const displayPercent = Math.min(current, target);
+        const fillWidth = Math.min((current / target) * 100, 100);
+        fill.style.width = fillWidth + '%';
+        percent.textContent = displayPercent + '%';
+
+        // Update status message
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (current >= messages[i].at) {
+                status.textContent = messages[i].text;
+                break;
+            }
+        }
+
+        if (current >= target) {
+            clearInterval(interval);
+            setTimeout(() => goToStage(4), 1500);
+        }
+    }, 30);
+}
+
+// ===== STAGE 4: YES/NO BUTTONS =====
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+let noClickCount = 0;
 
 function handleNoClick(e) {
     e.stopPropagation();
     noClickCount = Math.min(noClickCount + 1, 100);
 
-    // Gradually make YES bigger and NO smaller
-    const grow = 1 + Math.min(noClickCount * 0.08, 1.5); // up to ~2.5x
+    const grow = 1 + Math.min(noClickCount * 0.08, 1.5);
     const shrink = Math.max(1 - Math.min(noClickCount * 0.06, 0.7), 0.35);
-    yesBtn.style.transform = `scale(${grow})`;
-    noBtn.style.transform = `scale(${shrink})`;
-    noBtn.style.opacity = `${Math.max(0.35, shrink)}`;
+    yesBtn.style.transform = 'scale(' + grow + ')';
+    noBtn.style.transform = 'scale(' + shrink + ')';
+    noBtn.style.opacity = '' + Math.max(0.35, shrink);
 
-    // Move button on every click
     moveAwayShort();
 }
 
@@ -419,77 +622,69 @@ function moveAwayShort() {
     noBtn.style.top = y + 'px';
 }
 
-// re-enable hover movement: moves away when hovered or touched
 noBtn.addEventListener('mouseenter', moveAwayShort);
 noBtn.addEventListener('mousemove', moveAwayShort);
 noBtn.addEventListener('touchstart', moveAwayShort);
-
 noBtn.addEventListener('click', handleNoClick);
-noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); handleNoClick(e); });
+noBtn.addEventListener('touchstart', function(e) { e.preventDefault(); handleNoClick(e); });
 
+// ===== STAGE 5: CELEBRATION =====
 function sayYes() {
-    document.getElementById("ask").style.display = "none";
-    document.getElementById("yay").style.display = "block";
+    goToStage(5);
     launchConfetti();
 }
 
 function launchConfetti() {
-    const confetti = document.getElementById("confetti");
-    for (let i = 0; i < 60; i++) {
-        const piece = document.createElement("span");
-        piece.style.left = Math.random() * 100 + "%";
-        piece.style.background = ['#b8856a','#c9a68e','#d4c4b8','#d4a574'][Math.floor(Math.random()*4)];
-        piece.style.width = (6+Math.random()*10) + 'px';
+    const confetti = document.getElementById('confetti');
+    for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('span');
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.background = ['#b8856a','#c9a68e','#d4c4b8','#d4a574','#e8c9a0'][Math.floor(Math.random()*5)];
+        piece.style.width = (6 + Math.random() * 10) + 'px';
         piece.style.height = piece.style.width;
-        piece.style.animationDuration = (1 + Math.random() * 2.5) + "s";
-        piece.style.top = (-20 - Math.random()*40) + 'px';
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        piece.style.animationDuration = (1 + Math.random() * 2.5) + 's';
+        piece.style.top = (-20 - Math.random() * 40) + 'px';
         confetti.appendChild(piece);
-        setTimeout(()=> piece.remove(), 4000);
+        setTimeout(() => piece.remove(), 4000);
     }
 }
 
-// Create floating hearts
-function createFloatingHearts() {
-    const container = document.getElementById("floatingHearts");
-    const hearts = ['🤍', '🤎', '✨', '🌟', '💫', '⭐', '💛'];
+// ===== BACKGROUND FLOATING ELEMENTS =====
+function createFloatingElements() {
+    const container = document.getElementById('floatingBg');
+    const items = ['🤍', '🤎', '✨', '🌟', '💫', '⭐'];
 
     setInterval(() => {
-        const heart = document.createElement("span");
-        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-        heart.style.left = Math.random() * 100 + "%";
-        heart.style.fontSize = (1 + Math.random() * 1.5) + "rem";
-        heart.style.animationDuration = (6 + Math.random() * 4) + "s";
-        heart.style.animationDelay = Math.random() * 2 + "s";
-        container.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 10000);
-    }, 800);
+        const el = document.createElement('span');
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.style.left = Math.random() * 100 + '%';
+        el.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+        el.style.animationDuration = (6 + Math.random() * 4) + 's';
+        el.style.animationDelay = Math.random() * 2 + 's';
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 10000);
+    }, 1000);
 }
 
-// Create sparkles around card
 function createSparkles() {
-    const container = document.getElementById("sparkles");
+    const container = document.getElementById('sparkles');
     const positions = [
-        { top: '10%', left: '5%' },
-        { top: '20%', right: '8%' },
-        { top: '50%', left: '2%' },
-        { top: '70%', right: '5%' },
-        { top: '85%', left: '10%' },
-        { top: '15%', right: '15%' },
-        { bottom: '15%', left: '12%' },
-        { bottom: '25%', right: '10%' }
+        { top: '10%', left: '5%' }, { top: '20%', right: '8%' },
+        { top: '50%', left: '2%' }, { top: '70%', right: '5%' },
+        { top: '85%', left: '10%' }, { top: '15%', right: '15%' },
+        { bottom: '15%', left: '12%' }, { bottom: '25%', right: '10%' }
     ];
 
     positions.forEach((pos, i) => {
-        const sparkle = document.createElement("span");
+        const sparkle = document.createElement('span');
         Object.assign(sparkle.style, pos);
-        sparkle.style.animationDelay = (i * 0.3) + "s";
+        sparkle.style.animationDelay = (i * 0.3) + 's';
         container.appendChild(sparkle);
     });
 }
 
-// Initialize animations
-createFloatingHearts();
+createFloatingElements();
 createSparkles();
 </script>
 
