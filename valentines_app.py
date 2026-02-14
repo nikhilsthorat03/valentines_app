@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(
-    page_title="Valentine 💖",
+    page_title="Valentine's: The Sequel 🎬✨",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -69,7 +69,7 @@ html, body {
 }
 
 body {
-    background: linear-gradient(135deg,#fff0f8 0%, #ffd6ee 30%, #ff8acb 100%);
+    background: linear-gradient(135deg, #f5f0eb 0%, #e8ddd5 30%, #d4c4b8 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,7 +88,7 @@ body {
 .floating-hearts span {
     position: absolute;
     font-size: 2rem;
-    opacity: 0.4;
+    opacity: 0.15;
     animation: floatUp 8s ease-in infinite;
 }
 
@@ -107,15 +107,15 @@ body {
 
 /* Card */
 .card {
-    background: linear-gradient(180deg, #fff5fb 0%, #ffe6f6 50%, #ffd6f0 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #faf8f6 50%, #f5f2ef 100%);
     width: min(92vw, 760px);
     padding: 2.25rem 2.6rem;
     border-radius: 28px;
-    box-shadow: 0 30px 80px rgba(255,20,147,0.12), inset 0 1px 0 rgba(255,255,255,0.15);
+    box-shadow: 0 30px 80px rgba(139, 100, 80, 0.08), inset 0 1px 0 rgba(255,255,255,0.4);
     text-align: center;
     position: relative;
-    color: #3b0b2e;
-    border: 1px solid rgba(255,255,255,0.06);
+    color: #5a4a42;
+    border: 1px solid rgba(212, 196, 184, 0.2);
     z-index: 2;
     animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -144,12 +144,22 @@ body {
     50% { transform: translateY(-15px) scale(1.1); }
 }
 
+/* Subtitle */
+.subtitle {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #c9a68e;
+    margin-bottom: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
 /* Question */
 .question {
     font-size: 1.9rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
-    background: linear-gradient(90deg, #ff1493, #ff69b4, #ff1493);
+    background: linear-gradient(90deg, #b8856a, #c9a68e, #b8856a);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -181,9 +191,9 @@ button {
 
 /* YES */
 .yes {
-    background: linear-gradient(90deg,#ff3a90,#ff85b6);
+    background: linear-gradient(90deg, #b8856a, #c9a68e);
     color: white;
-    box-shadow: 0 18px 50px rgba(255,90,150,0.18), 0 6px 18px rgba(0,0,0,0.18);
+    box-shadow: 0 18px 50px rgba(184, 133, 106, 0.15), 0 6px 18px rgba(0,0,0,0.1);
     font-weight: 800;
     width: 13rem;
     padding: 1rem 2.8rem;
@@ -198,7 +208,7 @@ button {
     position: absolute;
     inset: -4px;
     border-radius: 999px;
-    background: linear-gradient(90deg, #ff3a90, #ff85b6);
+    background: linear-gradient(90deg, #b8856a, #c9a68e);
     opacity: 0;
     animation: glow 2s ease-in-out infinite;
     z-index: -1;
@@ -217,10 +227,10 @@ button {
 
 /* NO */
 .no {
-    background: linear-gradient(180deg,#fff0f5,#ffdff0);
-    color: #7a0b36;
-    border: 2px solid rgba(255,90,150,0.18);
-    box-shadow: 0 10px 30px rgba(255,90,150,0.06);
+    background: linear-gradient(180deg, #faf8f6, #f0ebe5);
+    color: #8b6450;
+    border: 2px solid rgba(184, 133, 106, 0.15);
+    box-shadow: 0 10px 30px rgba(139, 100, 80, 0.05);
     position: relative;
     width: 7.2rem;
     padding: 0.9rem 1.2rem;
@@ -230,7 +240,7 @@ button {
 .helper {
     font-size: 0.95rem;
     margin-top: 0.8rem;
-    color: #9d1646;
+    color: #9d7961;
     animation: shake 3s ease-in-out infinite;
     display: inline-block;
 }
@@ -256,7 +266,7 @@ button {
     position: absolute;
     width: 8px;
     height: 8px;
-    background: #ff69b4;
+    background: #b8856a;
     animation: fall 2s linear infinite;
 }
 
@@ -271,7 +281,7 @@ button {
 
 .small-note {
     font-size: 0.78rem;
-    color: #ffd6f0;
+    color: #c9a68e;
     margin-top: 0.6rem;
     animation: fadeInOut 3s ease-in-out infinite;
 }
@@ -292,10 +302,10 @@ button {
     position: absolute;
     width: 4px;
     height: 4px;
-    background: gold;
+    background: #d4a574;
     border-radius: 50%;
     animation: sparkle 3s ease-in-out infinite;
-    box-shadow: 0 0 10px gold;
+    box-shadow: 0 0 10px #d4a574;
 }
 
 @keyframes sparkle {
@@ -320,28 +330,29 @@ button {
     <div class="sparkles" id="sparkles"></div>
     <div id="ask">
         <div class="icon">
-            <span style="display: inline-block; animation: bounce 2s ease-in-out infinite;">😽</span>
-            <span style="display: inline-block; animation: bounce 2s ease-in-out 0.2s infinite;">💗</span>
+            <span style="display: inline-block; animation: bounce 2s ease-in-out infinite;">😊</span>
+            <span style="display: inline-block; animation: bounce 2s ease-in-out 0.2s infinite;">🌟</span>
             <span style="display: inline-block; animation: bounce 2s ease-in-out 0.4s infinite;">✨</span>
         </div>
-        <div class="question">Malavika, will you go on a Valentine's date with me? ✨💘</div>
+        <div class="subtitle">Valentine's: The Sequel 🎬</div>
+        <div class="question">So Malavika... second date on Valentine's?
+I know, perfect timing right? 😏✨</div>
 
         <div class="buttons">
-            <button class="yes" id="yesBtn" onclick="sayYes()">Yes! 😍</button>
-            <button class="no" id="noBtn">No... 😅</button>
+            <button class="yes" id="yesBtn" onclick="sayYes()">Let's do it! 😊</button>
+            <button class="no" id="noBtn">Maybe not 😅</button>
         </div>
 
-        <div class="helper">Click No at your own risk... 😈💥</div>
-        <div class="small-note">Click the pink button to accept the offer 😉</div>
+        <div class="helper">No pressure, just good vibes ✨</div>
     </div>
 
     <div class="celebrate" id="yay">
-        <div class="icon">🎉🥳</div>
-        <h2>YESSS! IT'S A DATE! 💖✨</h2>
-        <p style="font-size: 1.3rem; font-weight: 600; color: #3b0b2e; margin: 1rem 0;">
+        <div class="icon">🎉😊</div>
+        <h2>Awesome! Date #2 locked in! ✨</h2>
+        <p style="font-size: 1.3rem; font-weight: 600; color: #5a4a42; margin: 1rem 0;">
             14th Feb @ 8:30 PM<br>
             I'll pick you up! 🚗💨<br>
-            <span style="font-size: 1.1rem; color: #ff1493;">Location: It's a surprise! 🎁✨</span>
+            <span style="font-size: 1.1rem; color: #b8856a;">P.S. - Location's a surprise 😏🎁</span>
         </p>
         <img
             src="https://media.giphy.com/media/g9582DNuQppxC/giphy.gif"
@@ -427,7 +438,7 @@ function launchConfetti() {
     for (let i = 0; i < 60; i++) {
         const piece = document.createElement("span");
         piece.style.left = Math.random() * 100 + "%";
-        piece.style.background = ['#ff6aa7','#ff2d95','#ffb6da','gold'][Math.floor(Math.random()*4)];
+        piece.style.background = ['#b8856a','#c9a68e','#d4c4b8','#d4a574'][Math.floor(Math.random()*4)];
         piece.style.width = (6+Math.random()*10) + 'px';
         piece.style.height = piece.style.width;
         piece.style.animationDuration = (1 + Math.random() * 2.5) + "s";
@@ -440,7 +451,7 @@ function launchConfetti() {
 // Create floating hearts
 function createFloatingHearts() {
     const container = document.getElementById("floatingHearts");
-    const hearts = ['💖', '💝', '💗', '💓', '💕', '❤️', '💘'];
+    const hearts = ['🤍', '🤎', '✨', '🌟', '💫', '⭐', '💛'];
 
     setInterval(() => {
         const heart = document.createElement("span");
